@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
@@ -11,12 +11,13 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 
+import { useSnackbar } from 'src/components/snackbar';
+
 import Logo from '../../../components/logo';
 import { paths } from '../../../routes/paths';
 import { login } from '../../../api/AuthRequest';
 import Iconify from '../../../components/iconify';
 import { RouterLink } from '../../../routes/components';
-import {useSnackbar} from "../../../components/snackbar";
 
 
 
@@ -42,7 +43,6 @@ const LoginForm = () => {
   const handleLogin = async () => {
     try {
       const response = await login(username, password);
-      console.log(response); // Виведення відповіді з сервера у консоль
       if (response.accessToken) {
         localStorage.setItem('accessToken', response.accessToken);
         localStorage.setItem('username', username);
@@ -63,11 +63,9 @@ const LoginForm = () => {
   useEffect(() => {
     if (accessToken) {
       enqueueSnackbar('Вхід успішний!');
-
-      console.log('Отримано токен:', accessToken);
       router.push(paths.home.go);
     }
-  }, [router, accessToken]);
+  }, [router, accessToken, enqueueSnackbar]);
 
 
 

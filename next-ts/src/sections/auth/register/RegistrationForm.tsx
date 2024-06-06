@@ -1,6 +1,5 @@
 "use client"
 
-import axios from "axios";
 import React, { useState} from 'react';
 
 import Link from '@mui/material/Link';
@@ -14,14 +13,17 @@ import { Grid, Button, TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+import { useSnackbar } from 'src/components/snackbar';
+
 import { paths } from '../../../routes/paths';
-import Iconify from '../../../components/iconify';
-import { RouterLink } from '../../../routes/components';
-import {register} from "../../../api/AuthRequest";
 import {useRouter} from "../../../routes/hooks";
+import Iconify from '../../../components/iconify';
+import {register} from "../../../api/AuthRequest";
+import { RouterLink } from '../../../routes/components';
 
 
 const RegistrationForm = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -73,10 +75,14 @@ const RegistrationForm = () => {
     try {
       const response = await register(role, email, username, password);
       console.log('Registration successful', response);
+      enqueueSnackbar('Реестрація пройшла успішно!');
+
       router.push(paths.auth.login);
 
     } catch (errorR) {
       console.error('Registration failed', errorR);
+      enqueueSnackbar('Якась помилка упс!', errorR);
+
       setError('Registration failed');
     }
   };

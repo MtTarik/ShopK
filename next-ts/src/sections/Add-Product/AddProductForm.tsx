@@ -257,7 +257,10 @@ const AddProductForm: React.FC = () => {
                 component="div"
               > {error.map((errMsg, index) => (
                 <Typography key={index} variant="h6" color="error">Error: <span>{errMsg}</span></Typography>
-              )}</Box>
+
+              ))}
+              </Box>
+              )}
             {isSuccess && (
               <Box
                 component="div"

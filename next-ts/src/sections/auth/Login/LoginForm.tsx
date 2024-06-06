@@ -44,6 +44,7 @@ const LoginForm = () => {
       if (response.accessToken) {
         localStorage.setItem('accessToken', response.accessToken);
         localStorage.setItem('username', username);
+        enqueueSnackbar('Вхід успішний!');
 
         router.push(paths.home.go);
       } else {
@@ -59,6 +60,8 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (accessToken) {
+      enqueueSnackbar('Вхід успішний!');
+
       console.log('Отримано токен:', accessToken);
       router.push(paths.home.go);
     }

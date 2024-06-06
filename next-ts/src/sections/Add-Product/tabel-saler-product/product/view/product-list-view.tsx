@@ -143,6 +143,7 @@ export default function ProductListView() {
       }
       const data = await response.json();
       console.log('Deleted item:', data);
+      enqueueSnackbar('Delete success!');
 
       const updatedCartItems = cartItems.filter(item => item.objectID !== cartId);
       setCartItems(updatedCartItems);

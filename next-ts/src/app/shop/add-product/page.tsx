@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function AddProduct() {
-  return(<AddProductForm />);
+  return <AddProductForm />;
 }

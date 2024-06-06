@@ -22,11 +22,14 @@ import {getCategories} from "../../api/CategoryRequest";
 import {useSettingsContext} from "../../components/settings";
 import CustomBreadcrumbs from "../../components/custom-breadcrumbs";
 import {Category, addProduct, setProductPhoto} from "../../api/ProductRequest";
+import {useSnackbar} from "../../components/snackbar";
 
 
 
 
 const AddProductForm: React.FC = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [name, setName] = useState<string>('');
   const [price, setPrice] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -82,6 +85,7 @@ const AddProductForm: React.FC = () => {
 
     try {
       const productResponse = await addProduct(token, name, categoriesDTO, Number(price), description);
+      enqueueSnackbar('Ви додали товар!');
 
       if (productResponse.status === 401) {
         throw new Error('Unauthorized');
@@ -246,15 +250,14 @@ const AddProductForm: React.FC = () => {
               )}
             </form>
             {error.length > 0 && (
-              <div>
-                <Typography variant="h6" color="error">Error:</Typography>
-                <ul>
-                  {error.map((errMsg, index) => (
-                    <li key={index}>{errMsg}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+              <Box
+                sx={{
+                  m:5,
+                }}
+                component="div"
+              > {error.map((errMsg, index) => (
+                <Typography key={index} variant="h6" color="error">Error: <span>{errMsg}</span></Typography>
+              )}</Box>
             {isSuccess && (
               <Box
                 component="div"
@@ -263,7 +266,6 @@ const AddProductForm: React.FC = () => {
                 }}
               >
                 <Typography variant="h6" color="success">Продукт успішно додано.</Typography>
-
               </Box>
             )}
           </Card>

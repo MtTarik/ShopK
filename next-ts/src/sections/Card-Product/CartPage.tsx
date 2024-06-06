@@ -64,7 +64,6 @@ const CartPage = () => {
       const data = await response.json();
       console.log('Deleted item:', data);
 
-      // Update cart items and total price
       setCartItems(cartItems.filter(item => item.productId !== cartId));
       const updatedTotalPrice = cartItems.reduce((total: number, item: CartItem) => total + item.price * item.quantity, 0);
       setTotalPrice(updatedTotalPrice);

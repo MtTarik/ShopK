@@ -12,10 +12,14 @@ export interface LogoProps extends BoxProps {
 
 const Logo = forwardRef<HTMLDivElement, LogoProps>(
   ({ disabledLink = false, sx, ...other }, ref) => {
+    const LOGO = 'My Shop';
+
+
     const logo = (
       <Box
-        component="span"
-      >My Shop</Box>
+        component="h5"
+        sx={{ cursor: 'pointer' }}
+      >{LOGO}</Box>
     );
 
 

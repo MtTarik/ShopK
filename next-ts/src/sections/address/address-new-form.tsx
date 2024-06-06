@@ -72,7 +72,6 @@ export default function AddressNewForm({ open, onClose, onCreate }: Props) {
         name: data.name,
         phoneNumber: data.phoneNumber,
         fullAddress: `${data.address}, ${data.city}, ${data.state}, ${data.country}, ${data.zipCode}`,
-        addressType: data.addressType,
         primary: data.primary,
       });
       onClose();
@@ -106,7 +105,9 @@ export default function AddressNewForm({ open, onClose, onCreate }: Props) {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="name" label="Full Name" />
+              <RHFTextField name="name" label="ім'я" />
+
+              <RHFTextField name="name" label="Прізвище" />
 
               <RHFTextField name="phoneNumber" label="Phone Number" />
             </Box>

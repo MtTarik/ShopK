@@ -10,7 +10,7 @@ import { IUserProfileCover } from 'src/types/user';
 
 // ----------------------------------------------------------------------
 
-export default function ProfileCover({ name, avatarUrl, role, coverUrl }: IUserProfileCover) {
+export default function ProfileCover({ name, avatarUrl, role }: IUserProfileCover) {
   const theme = useTheme();
 
   return (
@@ -18,10 +18,8 @@ export default function ProfileCover({ name, avatarUrl, role, coverUrl }: IUserP
       sx={{
         ...bgGradient({
           color: alpha(theme.palette.primary.darker, 0.8),
-          imgUrl: coverUrl,
         }),
         height: 1,
-        color: 'common.white',
       }}
     >
       <Stack
@@ -49,7 +47,7 @@ export default function ProfileCover({ name, avatarUrl, role, coverUrl }: IUserP
 
         <ListItemText
           sx={{
-            mt: 3,
+            mt: 5,
             ml: { md: 3 },
             textAlign: { xs: 'center', md: 'unset' },
           }}

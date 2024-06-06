@@ -6,7 +6,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import { bgGradient } from 'src/theme/css';
-import Logo from "../../sections/_examples/extra/animate-view/other/logo";
+import Logo from "../../components/logo";
 
 
 
@@ -22,9 +22,6 @@ export default function AuthClassicLayout({ children, image, title }: Props) {
 
   const mdUp = useResponsive('up', 'md');
 
-  const renderLogo = (
-    <Logo/>
-  );
 
   const renderContent = (
     <Stack
@@ -84,7 +81,6 @@ export default function AuthClassicLayout({ children, image, title }: Props) {
         minHeight: '100vh',
       }}
     >
-      {renderLogo}
 
       {mdUp && renderSection}
 

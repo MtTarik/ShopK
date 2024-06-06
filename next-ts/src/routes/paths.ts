@@ -12,7 +12,8 @@ const ROOTS = {
   AUTH: '/auth',
   AUTH_DEMO: '/auth-demo',
   HOME: '/',
-  SHOP: '/shop'
+  SHOP: '/shop',
+  USER:'/user'
 };
 
 // ----------------------------------------------------------------------
@@ -54,9 +55,10 @@ export const paths = {
     },
   },
 
+
   // AUTH
   shop:{
-    hs: `${ROOTS.HOME}`,
+    hs: `${ROOTS.SHOP}`,
   },
   auth: {
     login: `${ROOTS.AUTH}/login`,
@@ -67,18 +69,18 @@ export const paths = {
     go: ROOTS.SHOP,
     chat: `${ROOTS.SHOP}/chat`,
 
-
     user: {
-      profile: `${ROOTS.HOME}/user`,
-      new: `${ROOTS.HOME}/user/new`,
-      list: `${ROOTS.HOME}/user/list`,
-      cards: `${ROOTS.HOME}/user/cards`,
-      account: `${ROOTS.HOME}/user/account`,
-      edit: (id: string) => `${ROOTS.HOME}/user/${id}/edit`,
+      profile: `${ROOTS.USER}`,
+      new: `${ROOTS.USER}/new`,
+      list: `${ROOTS.USER}/list`,
+      cards: `${ROOTS.USER}/cards`,
+      account: `${ROOTS.USER}/account`,
+      edit: (id: string) => `${ROOTS.USER}/${id}/edit`,
       demo: {
-        edit: `${ROOTS.HOME}/user/${MOCK_ID}/edit`,
+        edit: `${ROOTS.USER}/${MOCK_ID}/edit`,
       },
     },
+
     product: {
       root: `${ROOTS.SHOP}`,
       new: `${ROOTS.SHOP}/add-product`,
@@ -91,10 +93,10 @@ export const paths = {
     },
 
     order: {
-      root: `${ROOTS.HOME}/order`,
-      details: (id: string) => `${ROOTS.HOME}/order/${id}`,
+      root: `${ROOTS.SHOP}/order`,
+      details: (id: string) => `${ROOTS.SHOP}/order/${id}`,
       demo: {
-        details: `${ROOTS.HOME}/order/${MOCK_ID}`,
+        details: `${ROOTS.SHOP}/order/${MOCK_ID}`,
       },
     },
   },

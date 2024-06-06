@@ -9,7 +9,7 @@ import Tabs, { tabsClasses } from '@mui/material/Tabs';
 
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 
-import { _userAbout, _userFeeds, _userFriends, _userGallery, _userFollowers } from 'src/_mock';
+import { _userAbout, _userFeeds, _userGallery, _userFollowers } from 'src/_mock';
 
 import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
@@ -20,6 +20,7 @@ import ProfileCover from '../profile-cover';
 import ProfileFriends from '../profile-friends';
 import ProfileGallery from '../profile-gallery';
 import ProfileFollowers from '../profile-followers';
+import {ProductListView} from "../../Add-Product/tabel-saler-product/product/view";
 
 
 const TABS = [
@@ -76,7 +77,6 @@ export default function UserProfileView() {
           role={_userAbout.role}
           name={user?.displayName}
           avatarUrl={user?.photoURL}
-          coverUrl={_userAbout.coverUrl}
         />
 
         <Tabs
@@ -107,15 +107,9 @@ export default function UserProfileView() {
 
       {currentTab === 'followers' && <ProfileFollowers followers={_userFollowers} />}
 
-      {currentTab === 'friends' && (
-        <ProfileFriends
-          friends={_userFriends}
-          searchFriends={searchFriends}
-          onSearchFriends={handleSearchFriends}
-        />
-      )}
 
-      {currentTab === 'gallery' && <ProfileGallery gallery={_userGallery} />}
+
+      {currentTab === 'gallery' && <ProductListView />}
     </Container>
   );
 }

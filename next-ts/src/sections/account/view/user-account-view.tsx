@@ -8,7 +8,7 @@ import Container from '@mui/material/Container';
 
 import { paths } from 'src/routes/paths';
 
-import { _userAbout, _userPlans, _userPayment, _userInvoices, _userAddressBook } from 'src/_mock';
+import { _userPayment, _userInvoices, _userAddressBook } from 'src/_mock';
 
 import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
@@ -37,11 +37,6 @@ const TABS = [
     value: 'notifications',
     label: 'Notifications',
     icon: <Iconify icon="solar:bell-bing-bold" width={24} />,
-  },
-  {
-    value: 'social',
-    label: 'Social links',
-    icon: <Iconify icon="solar:share-bold" width={24} />,
   },
   {
     value: 'security',
@@ -91,7 +86,6 @@ export default function AccountView() {
 
       {currentTab === 'billing' && (
         <AccountBilling
-          plans={_userPlans}
           cards={_userPayment}
           invoices={_userInvoices}
           addressBook={_userAddressBook}
@@ -99,8 +93,6 @@ export default function AccountView() {
       )}
 
       {currentTab === 'notifications' && <AccountNotifications />}
-
-      {currentTab === 'social' && <AccountSocialLinks socialLinks={_userAbout.socialLinks} />}
 
       {currentTab === 'security' && <AccountChangePassword />}
     </Container>

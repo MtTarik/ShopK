@@ -101,15 +101,7 @@ const ProductStoreInfo: React.FC = () => {
   };
 
 
-  if (loading) {
-    return (
-      <Container maxWidth="lg" sx={{ mt: 5, mb: 15 }}>
-        <Typography variant="h4" color="text.secondary" sx={{ mt: 5, textAlign: 'center' }}>
-          Завантаження...
-        </Typography>
-      </Container>
-    );
-  }
+
 
   if (!product) {
     return (

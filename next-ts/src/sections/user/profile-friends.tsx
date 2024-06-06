@@ -87,7 +87,7 @@ type FriendCardProps = {
 };
 
 function FriendCard({ friend }: FriendCardProps) {
-  const { name, role, avatarUrl } = friend;
+  const { name, avatarUrl } = friend;
 
   const popover = usePopover();
 
@@ -118,24 +118,11 @@ function FriendCard({ friend }: FriendCardProps) {
           {name}
         </Link>
 
-        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1, mt: 0.5 }}>
-          {role}
-        </Typography>
 
         <Stack alignItems="center" justifyContent="center" direction="row">
-          {_socials.map((social) => (
-            <IconButton
-              key={social.name}
-              sx={{
-                color: social.color,
-                '&:hover': {
-                  bgcolor: alpha(social.color, 0.08),
-                },
-              }}
-            >
-              <Iconify icon={social.icon} />
-            </IconButton>
-          ))}
+          <Link variant="subtitle1" color="text.primary">
+            {name}
+          </Link>
         </Stack>
 
         <IconButton

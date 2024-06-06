@@ -49,14 +49,14 @@ export default function ProfileHome({ info, posts }: Props) {
         <Stack width={1}>
           {fNumber(info.totalFollowers)}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
-            Follower
+            Shop
           </Box>
         </Stack>
 
         <Stack width={1}>
           {fNumber(info.totalFollowing)}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
-            Following
+            Shop
           </Box>
         </Stack>
       </Stack>
@@ -151,29 +151,8 @@ export default function ProfileHome({ info, posts }: Props) {
       <CardHeader title="Social" />
 
       <Stack spacing={2} sx={{ p: 3 }}>
-        {_socials.map((link) => (
-          <Stack
-            key={link.name}
-            spacing={2}
-            direction="row"
-            sx={{ wordBreak: 'break-all', typography: 'body2' }}
-          >
-            <Iconify
-              icon={link.icon}
-              width={24}
-              sx={{
-                flexShrink: 0,
-                color: link.color,
-              }}
-            />
-            <Link color="inherit">
-              {link.value === 'facebook' && info.socialLinks.facebook}
-              {link.value === 'instagram' && info.socialLinks.instagram}
-              {link.value === 'linkedin' && info.socialLinks.linkedin}
-              {link.value === 'twitter' && info.socialLinks.twitter}
-            </Link>
-          </Stack>
-        ))}
+        {renderFollows}
+
       </Stack>
     </Card>
   );

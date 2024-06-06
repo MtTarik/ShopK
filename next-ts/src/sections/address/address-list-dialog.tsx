@@ -97,9 +97,6 @@ export default function AddressListDialog({
             {address.primary && <Label color="info">Default</Label>}
           </Stack>
 
-          {address.company && (
-            <Box sx={{ color: 'primary.main', typography: 'caption' }}>{address.company}</Box>
-          )}
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             {address.fullAddress}
@@ -159,8 +156,7 @@ function applyFilter({ inputData, query }: { inputData: IAddressItem[]; query: s
     return inputData.filter(
       (address) =>
         address.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-        address.fullAddress.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-        `${address.company}`.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        address.fullAddress.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
 

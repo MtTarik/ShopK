@@ -22,7 +22,6 @@ export type IUserSocialLink = {
 export type IUserProfileCover = {
   name: string;
   role: string;
-  coverUrl: string;
   avatarUrl: string;
 };
 
@@ -56,7 +55,6 @@ export type IUserProfileGallery = {
 export type IUserProfileFriend = {
   id: string;
   name: string;
-  role: string;
   avatarUrl: string;
 };
 

@@ -22,18 +22,13 @@ import {
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
-import { RouterLink } from 'src/routes/components';
-
 import { useBoolean } from 'src/hooks/use-boolean';
-
 import { PRODUCT_STOCK_OPTIONS } from 'src/_mock';
-
 import Iconify from 'src/components/iconify';
 import { useSnackbar } from 'src/components/snackbar';
 import EmptyContent from 'src/components/empty-content';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { useSettingsContext } from 'src/components/settings';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
 import {IProductTableFilters} from 'src/types/product';
 
@@ -289,20 +284,7 @@ export default function ProductListView() {
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <CustomBreadcrumbs
-          heading="List"
-          links={[
-            { name: 'Dashboard', href: paths.home.go },
-            { name: 'Product', href: paths.home.product.root },
-            { name: 'List' },
-          ]}
-          action={
-            <Button component={RouterLink} href={paths.home.product.new} variant="contained" startIcon={<Iconify icon="mingcute:add-line" />}>
-              New Product
-            </Button>
-          }
-          sx={{ mb: { xs: 3, md: 5 } }}
-        />
+
 
         <Card sx={{ height: { xs: 800, md: 2 }, flexGrow: { md: 1 }, display: { md: 'flex' }, flexDirection: { md: 'column' } }}>
           <DataGrid

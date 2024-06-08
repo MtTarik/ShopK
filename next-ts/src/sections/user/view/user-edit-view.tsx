@@ -9,6 +9,7 @@ import { _userList } from 'src/_mock';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
+import {useTranslate} from "../../../locales";
 import UserNewEditForm from '../user-new-edit-form';
 
 // ----------------------------------------------------------------------
@@ -19,20 +20,19 @@ type Props = {
 
 export default function UserEditView({ id }: Props) {
   const settings = useSettingsContext();
+  const { t } = useTranslate();
 
   const currentUser = _userList.find((user) => user.id === id);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Edit"
+        heading={t("edit")}
         links={[
+          { name: t('shop'), href: paths.home.go, },
+
           {
-            name: 'Dashboard',
-            href: paths.home.go,
-          },
-          {
-            name: 'User',
+            name: t('user'),
             href: paths.home.user.profile,
           },
           { name: currentUser?.name },

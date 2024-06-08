@@ -25,12 +25,13 @@ import noPhoto from '../../assets/no_photo.jpg'
 import {useSettingsContext} from "../../components/settings";
 import CustomBreadcrumbs from "../../components/custom-breadcrumbs";
 import {getProduct, getProductPhoto, addProductToCart} from "../../api/ProductRequest";
-import {NotFoundView} from "../error";
+import {useTranslate} from "../../locales";
 
 const ProductStoreInfo: React.FC = () => {
   const settings = useSettingsContext();
   const { id } = useParams<{ id: string }>();
-  const [loading, setLoading] = useState(true);
+  const { t } = useTranslate();
+
   const [product, setProduct] = useState<Product | null>(null);
   const { addToCart, cart } = useCart(); // Використайте контекст кошика тут
   const [addedToCart, setAddedToCart] = useState<boolean>(false);
@@ -58,7 +59,6 @@ const ProductStoreInfo: React.FC = () => {
         const photoBlob = await getProductPhoto(Number(id));
         const imageURLS = URL.createObjectURL(photoBlob);
         setImageURL(imageURLS);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching product:', error);
       }
@@ -78,7 +78,7 @@ const ProductStoreInfo: React.FC = () => {
 
   const handleAddToCart = async () => {
     if (product) {
-      const response = await addProductToCart(token,  Number(id), quantity); // Відправляємо запит на додавання товару до кошика
+      const response = await addProductToCart(token,  Number(id), quantity);
       if (response.status === 401) {
         console.error('Unauthorized request');
         return;
@@ -101,15 +101,6 @@ const ProductStoreInfo: React.FC = () => {
   };
 
 
-
-
-  if (!product) {
-    return (
-      <Container maxWidth="lg" sx={{ mt: 5, mb: 15 }}>
-        <NotFoundView />
-      </Container>
-    );
-  }
   return (
     <Container
       maxWidth={settings.themeStretch ? false : 'lg'}
@@ -120,8 +111,7 @@ const ProductStoreInfo: React.FC = () => {
     >
       <CustomBreadcrumbs
         links={[
-          { name: 'Home', href: '/' },
-          { name: 'Shop', href: '/shop' },
+          { name: t('shop'), href: '/shop' },
           { name: product?.name },
         ]}
         sx={{ mb: 5 }}
@@ -147,14 +137,14 @@ const ProductStoreInfo: React.FC = () => {
             {product?.name}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" sx={{ mt: 2 }}>
-            Price: ${product?.price?.toFixed(2) || 'N/A'}
+            {t('price')}: ${product?.price?.toFixed(2) || 'N/A'}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" sx={{ mt: 2 }}>
-            Categories: {product?.categories ? product.categories.map((category) => category.name).join(', ') : 'N/A'}
+            {t('categories')}: {product?.categories ? product.categories.map((category) => category.name).join(', ') : 'N/A'}
           </Typography>
 
           <Link  href="/shop/chart" color="primary"  sx={{ mt: 2 }}>
-            перейти до кошика
+            {t('go_to_cart')}
           </Link>
           <Stack direction="row" alignItems="center" mt={2}>
             <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
@@ -201,14 +191,13 @@ const ProductStoreInfo: React.FC = () => {
               variant="contained"
               startIcon={<Iconify icon="solar:cart-plus-bold" width={24} />}
               onClick={handleAddToCart}
-              sx={{ whiteSpace: 'nowrap' }}
+              sx={{
+                m:2,
+                whiteSpace: 'nowrap' }}
             >
-              Add to Cart
+              {t('add_to_cart')}
             </Button>
 
-            <Button fullWidth size="large" type="submit" variant="contained" >
-              Buy Now
-            </Button>
           </Stack>
         </Grid>
       </Grid>
@@ -223,10 +212,26 @@ const ProductStoreInfo: React.FC = () => {
           }}
         >
           <Tab value="description" label="Description" />
+          <Tab value="category" label="Category" />
+
         </Tabs>
 
         {currentTab === 'description' && (
-          <Typography>{product?.description}</Typography>
+          <Typography
+            sx={{
+              m:5,
+            }}
+          >{product?.description}</Typography>
+        )}
+        {currentTab === 'category' && (
+          <Typography
+            sx={{
+              m:5,
+            }}
+          >
+            {t('')}  Категорії: {product?.categories ? product.categories.map((category) => category.name).join(', ') : 'N/A'}
+
+          </Typography>
         )}
       </Box>
 

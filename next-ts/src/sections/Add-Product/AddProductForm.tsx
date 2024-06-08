@@ -13,22 +13,23 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import CardHeader from "@mui/material/CardHeader";
-import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import CircularProgress from "@mui/material/CircularProgress";
 
+import {useTranslate} from "../../locales";
+import {useSnackbar} from "../../components/snackbar";
 import {getCategories} from "../../api/CategoryRequest";
 import {useSettingsContext} from "../../components/settings";
 import CustomBreadcrumbs from "../../components/custom-breadcrumbs";
 import {Category, addProduct, setProductPhoto} from "../../api/ProductRequest";
-import {useSnackbar} from "../../components/snackbar";
 
 
 
 
 const AddProductForm: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslate();
 
   const [name, setName] = useState<string>('');
   const [price, setPrice] = useState<string>('');
@@ -85,19 +86,23 @@ const AddProductForm: React.FC = () => {
 
     try {
       const productResponse = await addProduct(token, name, categoriesDTO, Number(price), description);
-      enqueueSnackbar('Ви додали товар!');
+      enqueueSnackbar(t('you_have_added_a_product'));
 
       if (productResponse.status === 401) {
+
+        enqueueSnackbar(t('something_is_wrong'), { variant: 'error' });
         throw new Error('Unauthorized');
       }
 
       const productData = productResponse;
+
       const productId = productData.id;
 
       if (image) {
         const photoResponse = await setProductPhoto(token, productId, image);
 
         if (photoResponse.status === 401) {
+          enqueueSnackbar(t('something_is_wrong'), { variant: 'error' });
           throw new Error('Unauthorized');
         }
       }
@@ -121,9 +126,8 @@ const AddProductForm: React.FC = () => {
       <CustomBreadcrumbs
         heading="Створення товару"
         links={[
-          { name: 'Home', href: '/' },
-          { name: 'Shop', href: '/shop' },
-          { name: 'Chart', href: '/chart' },
+          { name: t('shop'), href: '/shop' },
+          { name: t('add_to_product'), href: '/add-product' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
@@ -249,28 +253,7 @@ const AddProductForm: React.FC = () => {
                 />
               )}
             </form>
-            {error.length > 0 && (
-              <Box
-                sx={{
-                  m:5,
-                }}
-                component="div"
-              > {error.map((errMsg, index) => (
-                <Typography key={index} variant="h6" color="error">Error: <span>{errMsg}</span></Typography>
 
-              ))}
-              </Box>
-              )}
-            {isSuccess && (
-              <Box
-                component="div"
-                sx={{
-                  m: 5,
-                }}
-              >
-                <Typography variant="h6" color="success">Продукт успішно додано.</Typography>
-              </Box>
-            )}
           </Card>
         </Grid>
     </Container>

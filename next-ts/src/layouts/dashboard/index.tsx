@@ -1,7 +1,5 @@
 'use client';
 
-import {useState, useEffect} from "react";
-
 import Box from '@mui/material/Box';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -14,9 +12,6 @@ import Header from './header';
 import NavMini from './nav-mini';
 import NavVertical from './nav-vertical';
 import NavHorizontal from './nav-horizontal';
-import {SplashScreen} from "../../components/loading-screen";
-
-// ----------------------------------------------------------------------
 
 type Props = {
   children: React.ReactNode;
@@ -39,19 +34,6 @@ export default function DashboardLayout({ children }: Props) {
 
   const renderNavVertical = <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />;
 
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) {
-    return <SplashScreen />;
-  }
   if (isHorizontal) {
     return (
       <>
@@ -96,6 +78,7 @@ export default function DashboardLayout({ children }: Props) {
         }}
       >
         {renderNavVertical}
+
         <Main>{children}</Main>
       </Box>
     </>

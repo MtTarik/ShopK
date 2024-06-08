@@ -6,11 +6,8 @@ import { alpha, useTheme } from '@mui/material/styles';
 
 import { bgGradient } from 'src/theme/css';
 
-import { IUserProfileCover } from 'src/types/user';
 
-// ----------------------------------------------------------------------
-
-export default function ProfileCover({ name, avatarUrl, role }: IUserProfileCover) {
+export default function ProfileCover({ name, avatarUrl, role }: { name: string; avatarUrl: string | undefined; role: string;}) {
   const theme = useTheme();
 
   return (

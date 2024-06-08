@@ -26,16 +26,13 @@ export type IUserProfileCover = {
 };
 
 export type IUserProfile = {
-  id: string;
-  role: string;
-  quote: string;
+  roles: { id: number; name: string }[];
   email: string;
-  school: string;
-  country: string;
-  company: string;
-  totalFollowers: number;
-  totalFollowing: number;
-  socialLinks: IUserSocialLink;
+  firstName: string | null;
+  lastName: string | null;
+  address: string | null;
+  phoneNumber: string | null;
+  photoURL?: string;
 };
 
 export type IUserProfileFollower = {

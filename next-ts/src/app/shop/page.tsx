@@ -6,7 +6,5 @@ export const metadata = {
 };
 
 export default function PricingPage() {
-  return<CardProduct />;
-
-
+  return <CardProduct/>;
 }

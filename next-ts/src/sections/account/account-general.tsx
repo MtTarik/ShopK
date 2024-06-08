@@ -1,83 +1,48 @@
 import * as Yup from 'yup';
-import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import {useState, useEffect, useCallback} from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import { useMockedUser } from 'src/hooks/use-mocked-user';
-
 import { fData } from 'src/utils/format-number';
-
-import { countries } from 'src/assets/data';
 
 import { useSnackbar } from 'src/components/snackbar';
 import FormProvider, {
-  RHFSwitch,
   RHFTextField,
   RHFUploadAvatar,
-  RHFAutocomplete,
 } from 'src/components/hook-form';
+
+import {useTranslate} from "../../locales";
+import {updateUser, getUserPhoto, setUserPhoto} from "../../api/UserRequest";
 
 // ----------------------------------------------------------------------
 
-type UserType = {
-  displayName: string;
-  email: string;
-  photoURL: any;
-  phoneNumber: string;
-  country: string;
-  address: string;
-  state: string;
-  city: string;
-  zipCode: string;
-  about: string;
-  isPublic: boolean;
-};
-
 export default function AccountGeneral() {
+  const { t } = useTranslate();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { user } = useMockedUser();
+  const username = typeof window !== 'undefined' ? localStorage.getItem('username') || '' : '';
+  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') || '' : '';
+
+  const [userPhotoUrl, setUserPhotoUrl] = useState<string | undefined>(undefined);
 
   const UpdateUserSchema = Yup.object().shape({
-    displayName: Yup.string().required('Name is required'),
     email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    photoURL: Yup.mixed<any>().nullable().required('Avatar is required'),
+    firstName: Yup.string().required('Name is required'),
+    lastName: Yup.string().required('Name is required'),
     phoneNumber: Yup.string().required('Phone number is required'),
-    country: Yup.string().required('Country is required'),
     address: Yup.string().required('Address is required'),
-    state: Yup.string().required('State is required'),
-    city: Yup.string().required('City is required'),
-    zipCode: Yup.string().required('Zip code is required'),
-    about: Yup.string().required('About is required'),
-    // not required
-    isPublic: Yup.boolean(),
+    photoURL: Yup.mixed().nullable(),
   });
-
-  const defaultValues: UserType = {
-    displayName: user?.displayName || '',
-    email: user?.email || '',
-    photoURL: user?.photoURL || null,
-    phoneNumber: user?.phoneNumber || '',
-    country: user?.country || '',
-    address: user?.address || '',
-    state: user?.state || '',
-    city: user?.city || '',
-    zipCode: user?.zipCode || '',
-    about: user?.about || '',
-    isPublic: user?.isPublic || false,
-  };
 
   const methods = useForm({
     resolver: yupResolver(UpdateUserSchema),
-    defaultValues,
   });
 
   const {
@@ -86,13 +51,30 @@ export default function AccountGeneral() {
     formState: { isSubmitting },
   } = methods;
 
+  useEffect(() => {
+    if (username) {
+      getUserPhoto(username).then(photoBlob => {
+        if (photoBlob) {
+          const photoUrl = URL.createObjectURL(photoBlob as Blob);
+          setUserPhotoUrl(photoUrl);
+          setValue('photoURL', photoUrl);
+        }
+      });
+    }
+  }, [username, setValue]);
+
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      enqueueSnackbar('Update success!');
-      console.info('DATA', data);
+      await updateUser(token, username, data.email, data.firstName, data.lastName, data.address, data.phoneNumber);
+      const { photoURL } = methods.getValues();
+      if (photoURL instanceof File) {
+        await setUserPhoto(token, username, photoURL);
+      }
+
+      enqueueSnackbar(t('update_success'));
     } catch (error) {
       console.error(error);
+      enqueueSnackbar(t('update_failed'), { variant: 'error' });
     }
   });
 
@@ -110,6 +92,7 @@ export default function AccountGeneral() {
     },
     [setValue]
   );
+
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
@@ -131,22 +114,13 @@ export default function AccountGeneral() {
                     color: 'text.disabled',
                   }}
                 >
-                  Allowed *.jpeg, *.jpg, *.png, *.gif
-                  <br /> max size of {fData(3145728)}
+                  { t('allowed') }, *.jpeg, *.jpg, *.png, *.gif
+                  <br /> { t('max_size_of') } {fData(3145728)}
+
+
                 </Typography>
               }
             />
-
-            <RHFSwitch
-              name="isPublic"
-              labelPlacement="start"
-              label="Public Profile"
-              sx={{ mt: 5 }}
-            />
-
-            <Button variant="soft" color="error" sx={{ mt: 3 }}>
-              Delete User
-            </Button>
           </Card>
         </Grid>
 
@@ -161,30 +135,21 @@ export default function AccountGeneral() {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="displayName" label="Name" />
-              <RHFTextField name="email" label="Email Address" />
-              <RHFTextField name="phoneNumber" label="Phone Number" />
-              <RHFTextField name="address" label="Address" />
-
-              <RHFAutocomplete
-                name="country"
-                type="country"
-                label="Country"
-                placeholder="Choose a country"
-                options={countries.map((option) => option.label)}
-                getOptionLabel={(option) => option}
+              <RHFTextField
+                name="username"
+                label={username}
+                disabled
               />
-
-              <RHFTextField name="state" label="State/Region" />
-              <RHFTextField name="city" label="City" />
-              <RHFTextField name="zipCode" label="Zip/Code" />
+              <RHFTextField name="email" label="Email Адреса" />
+              <RHFTextField name="firstName" label="ім'я" />
+              <RHFTextField name="lastName" label="Прізвище" />
+              <RHFTextField name="phoneNumber" label="Номер телефону" />
+              <RHFTextField name="address" label="Адреса" />
             </Box>
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-              <RHFTextField name="about" multiline rows={4} label="About" />
-
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                Save Changes
+                { t('save') }
               </LoadingButton>
             </Stack>
           </Card>

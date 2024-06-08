@@ -19,6 +19,7 @@ import Select, {SelectChangeEvent} from "@mui/material/Select";
 import Image from 'src/components/image';
 
 import {paths} from "../../routes/paths";
+import {useTranslate} from "../../locales";
 import Iconify from "../../components/iconify";
 import {RouterLink} from "../../routes/components";
 import {getCategories} from "../../api/CategoryRequest";
@@ -26,6 +27,7 @@ import ComponentHero from "../_examples/component-hero";
 import {useSettingsContext} from "../../components/settings";
 import CustomBreadcrumbs from "../../components/custom-breadcrumbs";
 import {Category, getProducts, getProductPhoto} from "../../api/ProductRequest";
+import {useSnackbar} from "../../components/snackbar";
 
 
 export interface Product {
@@ -38,6 +40,9 @@ export interface Product {
 }
 
 export default function CardProduct() {
+  const { t } = useTranslate();
+  const { enqueueSnackbar } = useSnackbar();
+
   const settings = useSettingsContext();
   const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -99,14 +104,10 @@ export default function CardProduct() {
       <Box sx={{ marginBottom: 2 }}>
       <ComponentHero>
         <CustomBreadcrumbs
-          heading="Головна"
+          heading={t('shop')}
           links={[
             {
-              name: 'Список товарів',
-              href: paths.home.go,
-            },
-            {
-              name: 'Список товарів',
+              name: t('shop'),
               href: paths.home.go,
             },
           ]}
@@ -116,14 +117,14 @@ export default function CardProduct() {
       </Box>
       <Box sx={{ marginBottom: 2 }}>
         <TextField
-          label="Search"
+          label={t('search')}
           variant="outlined"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           sx={{ marginRight: 2 }}
         />
         <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-          <InputLabel id="category-select-label">Category</InputLabel>
+          <InputLabel id="category-select-label">{t('categories')}</InputLabel>
           <Select
             labelId="category-select-label"
             id="category-select"
@@ -132,7 +133,7 @@ export default function CardProduct() {
             label="Category"
             fullWidth
           >
-            <MenuItem value="all">All</MenuItem>
+            <MenuItem value="all">{t('all')}</MenuItem>
             {Array.isArray(categories) && categories.map((category) => (
               <MenuItem key={category.id} value={category.name}>
                 {category.name}
@@ -174,19 +175,19 @@ export default function CardProduct() {
                       {product.name}
                     </Link>
                     <Typography variant="body2" color="text.secondary">
-                      Price: ${product.price.toFixed(2)}
+                      {t('price')}: ${product.price.toFixed(2)}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Categories: {
+                      {t('categories')} : {
                       product.categories.length > 2 ?
                         `${product.categories[0].name}, ${product.categories[1].name}...` :
                         product.categories.map((category) => category.name).join(', ')
                     }
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Description: {product.description}
+                      {t('description')}: {product.description}
                     </Typography>
-                    <Button>Купити</Button>
+                    <Button>{t('add_to_cart')}</Button>
                   </Stack>
                 </Card>
               </Grid>

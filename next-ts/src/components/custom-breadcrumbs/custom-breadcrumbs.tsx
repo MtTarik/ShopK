@@ -24,14 +24,12 @@ export default function CustomBreadcrumbs({
     <Box sx={{ ...sx }}>
       <Stack direction="row" alignItems="center">
         <Box sx={{ flexGrow: 1 }}>
-          {/* HEADING */}
           {heading && (
             <Typography variant="h4" gutterBottom>
               {heading}
             </Typography>
           )}
 
-          {/* BREADCRUMBS */}
           {!!links.length && (
             <Breadcrumbs separator={<Separator />} {...other}>
               {links.map((link) => (
@@ -48,8 +46,6 @@ export default function CustomBreadcrumbs({
 
         {action && <Box sx={{ flexShrink: 0 }}> {action} </Box>}
       </Stack>
-
-      {/* MORE LINK */}
       {!!moreLink && (
         <Box sx={{ mt: 2 }}>
           {moreLink.map((href) => (

@@ -1,4 +1,7 @@
+'use client';
+
 import { m } from 'framer-motion';
+import {useState, useEffect} from "react";
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -12,40 +15,33 @@ import Typography from '@mui/material/Typography';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
-import { useMockedUser } from 'src/hooks/use-mocked-user';
-
 import { useAuthContext } from 'src/auth/hooks';
 
 import { varHover } from 'src/components/animate';
 import { useSnackbar } from 'src/components/snackbar';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
+import {useTranslate} from "../../locales";
+import {IUserProfile} from "../../types/user";
+import {getUserInfo, getUserPhoto} from "../../api/UserRequest";
+import Iconify from "../../components/iconify";
+
 // ----------------------------------------------------------------------
 
-const OPTIONS = [
-  {
-    label: 'Home',
-    linkTo: '/',
-  },
-  {
-    label: 'Profile',
-    linkTo: paths.home.user.profile,
-  },
-  {
-    label: 'Settings',
-    linkTo: paths.home.user.account,
-  },
-];
+
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const router = useRouter();
 
-  const { user } = useMockedUser();
+  const { t } = useTranslate();
 
   const { logout } = useAuthContext();
 
+  const [userInfo, setUserInfo] = useState<IUserProfile | null>(null);
+  const [userPhotoUrl, setUserPhotoUrl] = useState<string | undefined>(undefined);
+  const username = typeof window !== 'undefined' ?  localStorage.getItem('username') || '' : '';
   const { enqueueSnackbar } = useSnackbar();
 
   const popover = usePopover();
@@ -63,11 +59,39 @@ export default function AccountPopover() {
     }
   };
 
-
   const handleClickItem = (path: string) => {
     popover.onClose();
     router.push(path);
   };
+
+  useEffect(() => {
+    if (username) {
+      getUserInfo(username).then(setUserInfo);
+      getUserPhoto(username).then(photoBlob => {
+        if (photoBlob) {
+          setUserPhotoUrl(URL.createObjectURL(photoBlob as Blob));
+        }
+      });
+    }
+  }, [username]);
+
+  if (!userInfo) return null;
+
+  const OPTIONS = [
+    {
+      label: t('home'),
+      linkTo: '/shop',
+
+    },
+    {
+      label: t('profile'),
+      linkTo: paths.home.user.profile,
+    },
+    {
+      label:  t('settings'),
+      linkTo: paths.home.user.account,
+    },
+  ];
 
   return (
     <>
@@ -88,26 +112,22 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
-          src={user?.photoURL}
-          alt={user?.displayName}
+          src={userPhotoUrl}
+          alt={username}
           sx={{
             width: 36,
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {user?.displayName?.charAt(0).toUpperCase()}
+          {username?.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 200, p: 0 }}>
         <Box sx={{ p: 2, pb: 1.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
-          </Typography>
-
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {user?.email}
+            {username}
           </Typography>
         </Box>
 
@@ -127,7 +147,7 @@ export default function AccountPopover() {
           onClick={handleLogout}
           sx={{ m: 1, fontWeight: 'fontWeightBold', color: 'error.main' }}
         >
-          Logout
+          {t('logout')}
         </MenuItem>
       </CustomPopover>
     </>

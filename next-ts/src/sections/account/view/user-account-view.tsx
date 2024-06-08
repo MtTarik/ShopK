@@ -14,41 +14,24 @@ import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
+import {useTranslate} from "../../../locales";
 import AccountGeneral from '../account-general';
 import AccountBilling from '../account-billing';
-import AccountSocialLinks from '../account-social-links';
 import AccountNotifications from '../account-notifications';
 import AccountChangePassword from '../account-change-password';
 
-// ----------------------------------------------------------------------
-
-const TABS = [
-  {
-    value: 'general',
-    label: 'General',
-    icon: <Iconify icon="solar:user-id-bold" width={24} />,
-  },
-  {
-    value: 'billing',
-    label: 'Billing',
-    icon: <Iconify icon="solar:bill-list-bold" width={24} />,
-  },
-  {
-    value: 'notifications',
-    label: 'Notifications',
-    icon: <Iconify icon="solar:bell-bing-bold" width={24} />,
-  },
-  {
-    value: 'security',
-    label: 'Security',
-    icon: <Iconify icon="ic:round-vpn-key" width={24} />,
-  },
-];
-
-// ----------------------------------------------------------------------
 
 export default function AccountView() {
   const settings = useSettingsContext();
+  const { t } = useTranslate();
+
+  const TABS = [
+    {
+      value: 'general',
+      label: t('general') ,
+      icon: <Iconify icon="solar:user-id-bold" width={24} />,
+    },
+  ];
 
   const [currentTab, setCurrentTab] = useState('general');
 
@@ -61,9 +44,9 @@ export default function AccountView() {
       <CustomBreadcrumbs
         heading="Account"
         links={[
-          { name: 'Shop', href: paths.home.go },
-          { name: 'User', href: paths.home.user.profile },
-          { name: 'Account' },
+          { name: t('shop'), href: '/shop' },
+          { name: t('user'), href: paths.home.user.profile },
+          { name: t('account') },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

@@ -58,11 +58,9 @@ export default function RootLayout({ children }: Props) {
           <ThemeProvider>
             <MotionLazy>
               <SnackbarProvider>
-
                   <SettingsDrawer/>
                   <ProgressBar/>
                   {children}
-
               </SnackbarProvider>
             </MotionLazy>
           </ThemeProvider>

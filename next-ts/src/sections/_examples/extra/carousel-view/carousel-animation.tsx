@@ -69,7 +69,7 @@ function CarouselItem({ item, active }: CarouselItemProps) {
 
   return (
     <Paper sx={{ position: 'relative' }}>
-      <Image dir="ltr" alt={title} src={coverUrl} ratio="16/9" />
+      <Image dir="ltr" alt={title} src={coverUrl} ratio='21/9'/>
 
       <Box
         sx={{
@@ -92,7 +92,7 @@ function CarouselItem({ item, active }: CarouselItemProps) {
         sx={{
           left: 0,
           bottom: 0,
-          maxWidth: 720,
+          maxWidth: 550,
           textAlign: 'left',
           position: 'absolute',
           color: 'common.white',
@@ -111,7 +111,7 @@ function CarouselItem({ item, active }: CarouselItemProps) {
         </m.div>
 
         <m.div variants={variants}>
-          <Button variant="contained" sx={{ mt: 3 }}>
+          <Button variant="contained" sx={{ mt: 1 }}>
             View More
           </Button>
         </m.div>

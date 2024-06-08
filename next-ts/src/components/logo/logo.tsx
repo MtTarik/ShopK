@@ -12,17 +12,13 @@ export interface LogoProps extends BoxProps {
 
 const Logo = forwardRef<HTMLDivElement, LogoProps>(
   ({ disabledLink = false, sx, ...other }, ref) => {
-    const LOGO = 'My Shop';
-
+    const LOGO = 'Shop';
 
     const logo = (
       <Box
         component="h5"
-        sx={{ cursor: 'pointer' }}
-      >{LOGO}</Box>
+        sx={{ width: 20, height: 10, cursor: 'pointer', ...sx }}>{LOGO}</Box>
     );
-
-
 
     return (
       <Link component={RouterLink} href="/" sx={{ display: 'contents' }}>

@@ -87,8 +87,8 @@ export const paths = {
       list: `${ROOTS.SHOP}/list-product`,
       edit: (id: string) => `${ROOTS.SHOP}/product/${id}/edit`,
       demo: {
-        details: `${ROOTS.SHOP}/product/${MOCK_ID}`,
-        edit: `${ROOTS.SHOP}/product/${MOCK_ID}/edit`,
+        details: `${ROOTS.SHOP}/product`,
+        edit: `${ROOTS.SHOP}/product/edit`,
       },
     },
 

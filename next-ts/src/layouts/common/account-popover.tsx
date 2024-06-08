@@ -75,6 +75,7 @@ export default function AccountPopover() {
     }
   }, [username]);
 
+
   if (!userInfo) return null;
 
   const OPTIONS = [
